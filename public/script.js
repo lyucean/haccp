@@ -237,7 +237,7 @@ const createMobileMenu = () => {
     if (window.innerWidth <= 768 && !document.querySelector('.mobile-menu-btn')) {
         const menuBtn = document.createElement('button');
         menuBtn.className = 'mobile-menu-btn';
-        menuBtn.innerHTML = '☰';
+        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
         menuBtn.style.cssText = `
       display: block;
       background: none;

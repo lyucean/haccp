@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+/* Добавляем Font Awesome */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
 * {
     margin: 0;
@@ -227,6 +229,10 @@ header {
     display: inline-block;
 }
 
+.btn-primary i {
+    margin-left: 8px;
+}
+
 .btn-primary:hover {
     background: var(--primary-dark);
     transform: translateY(-3px);
@@ -315,6 +321,7 @@ header {
 
 .badge-icon {
     font-size: 1.5rem;
+    color: var(--primary);
 }
 
 .badge-text {
@@ -397,6 +404,10 @@ header {
     margin-bottom: 1rem;
 }
 
+.section-badge i {
+    margin-right: 5px;
+}
+
 .section-title {
     font-size: 3rem;
     font-weight: 900;
@@ -460,6 +471,7 @@ header {
     justify-content: center;
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
+    color: white;
 }
 
 .feature-card h3 {
@@ -735,6 +747,7 @@ header {
 .service-icon {
     font-size: 3rem;
     margin-bottom: 1.5rem;
+    color: var(--primary); /* Добавляем цвет для иконок */
 }
 
 .service-card h3 {
@@ -834,6 +847,10 @@ header {
     display: inline-block;
 }
 
+.btn-white i {
+    margin-left: 8px; /* Добавляем отступ для иконок в белых кнопках */
+}
+
 .btn-white:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
@@ -886,6 +903,14 @@ footer {
 
 .footer-section ul li {
     margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-section ul li i {
+    color: var(--primary); /* Цвет для иконок в футере */
+    width: 16px; /* Фиксированная ширина для выравнивания */
 }
 
 .footer-section a {
@@ -905,6 +930,16 @@ footer {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
     color: rgba(255, 255, 255, 0.5);
+}
+
+.footer-bottom i.fa-heart {
+    color: #ff4757; /* Красный цвет для сердечка */
+    animation: heartbeat 1.5s ease infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
 }
 
 /* Responsive */
