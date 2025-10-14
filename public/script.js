@@ -396,39 +396,28 @@ slideDownStyle.textContent = `
 `;
 document.head.appendChild(slideDownStyle);
 
-// Модальное окно регистрации
+// Модальное окно регистрации - обновленная версия
 const registerModal = document.getElementById('registerModal');
-const registerButtons = document.querySelectorAll('.btn-primary, .header-cta, .plan-button');
 const modalClose = document.querySelector('.modal-close');
 const registerForm = document.getElementById('registerForm');
 const formSuccess = document.querySelector('.form-success');
 const formLoading = document.querySelector('.form-loading');
+const sourceInput = document.createElement('input'); // Создаем скрытое поле для источника
 
-// Открытие модального окна при клике на кнопки
-registerButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        openModal();
-    });
-});
-
-// Закрытие модального окна при клике на крестик
-if (modalClose) {
-    modalClose.addEventListener('click', function() {
-        closeModal();
-    });
+// Настраиваем скрытое поле для источника
+sourceInput.type = 'hidden';
+sourceInput.name = 'source';
+sourceInput.id = 'source';
+if (registerForm) {
+    registerForm.appendChild(sourceInput);
 }
 
-// Закрытие модального окна при клике вне его
-window.addEventListener('click', function(e) {
-    if (e.target === registerModal) {
-        closeModal();
-    }
-});
-
-// Функция открытия модального окна
-function openModal() {
+// Функция для открытия модального окна с указанием источника
+function openModalWithSource(source) {
     if (registerModal) {
+        // Устанавливаем источник в скрытое поле
+        document.getElementById('source').value = source;
+
         document.body.style.overflow = 'hidden'; // Запрещаем прокрутку страницы
         registerModal.classList.add('show');
     }
@@ -444,7 +433,73 @@ function closeModal() {
     }
 }
 
-// Валидация формы
+// Подключаем все кнопки на странице к модальному окну
+document.addEventListener('DOMContentLoaded', () => {
+    // Кнопки в шапке
+    const headerCta = document.querySelector('.header-cta');
+    if (headerCta) {
+        headerCta.addEventListener('click', function(e) {
+            e.preventDefault();
+            openModalWithSource('header_button');
+        });
+    }
+
+    // Кнопки в hero секции
+    const heroButtons = document.querySelectorAll('.hero-cta .btn-primary');
+    heroButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            openModalWithSource('hero_button');
+        });
+    });
+
+    // Кнопки в тарифах
+    const planButtons = document.querySelectorAll('.plan-button');
+    planButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Получаем название тарифа из ближайшего заголовка
+            const planName = this.closest('.pricing-card').querySelector('.plan-name').textContent;
+            openModalWithSource('pricing_' + planName.toLowerCase().replace(/\s+/g, '_'));
+        });
+    });
+
+    // Кнопка в CTA секции
+    const ctaButton = document.querySelector('.cta-section .btn-white');
+    if (ctaButton) {
+        ctaButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            openModalWithSource('bottom_cta');
+        });
+    }
+
+    // Кнопки в секции услуг
+    const serviceButtons = document.querySelectorAll('.service-button');
+    serviceButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Получаем название услуги из ближайшего заголовка
+            const serviceName = this.closest('.service-card').querySelector('h3').textContent;
+            openModalWithSource('service_' + serviceName.toLowerCase().replace(/\s+/g, '_'));
+        });
+    });
+
+    // Закрытие модального окна при клике на крестик
+    if (modalClose) {
+        modalClose.addEventListener('click', function() {
+            closeModal();
+        });
+    }
+
+    // Закрытие модального окна при клике вне его
+    window.addEventListener('click', function(e) {
+        if (e.target === registerModal) {
+            closeModal();
+        }
+    });
+});
+
+// Обновленная обработка отправки формы
 if (registerForm) {
     registerForm.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -469,14 +524,14 @@ if (registerForm) {
 
         // Проверяем формат email, если он заполнен
         if (emailInput.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
-            emailError.textContent = 'Пожалуйста, введите корректный email';
+            emailError.textContent = 'Проверь формат email';
             emailError.style.display = 'block';
             isValid = false;
         }
 
         // Проверяем формат телефона, если он заполнен
         if (phoneInput.value && !/^[+]?[0-9]{10,15}$/.test(phoneInput.value.replace(/\D/g, ''))) {
-            phoneError.textContent = 'Пожалуйста, введите корректный номер телефона';
+            phoneError.textContent = 'Проверь формат телефона';
             phoneError.style.display = 'block';
             isValid = false;
         }
@@ -530,20 +585,6 @@ if (registerForm) {
                     alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте позже.');
                 });
         }
-    });
-}
-
-// Маска для телефона
-const phoneInput = document.getElementById('phone');
-if (phoneInput) {
-    phoneInput.addEventListener('input', function(e) {
-        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
-        if (!x[1]) {
-            e.target.value = '';
-            return;
-        }
-        e.target.value = '+' + x[1] + (x[2] ? ' (' + x[2] + ')' : '') + (x[3] ? ' ' + x[3] : '') +
-            (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
     });
 }
 

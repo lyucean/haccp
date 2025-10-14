@@ -26,6 +26,7 @@ $postData = $_POST;
 $action = $postData['action'] ?? '';
 $email = filter_var($postData['email'] ?? '', FILTER_SANITIZE_EMAIL);
 $phone = preg_replace('/[^0-9+]/', '', $postData['phone'] ?? ''); // Очищаем телефон от всего, кроме цифр и +
+$source = htmlspecialchars($postData['source'] ?? 'unknown'); // Источник клика
 
 // Проверяем наличие email или телефона
 if (empty($email) && empty($phone)) {
@@ -47,18 +48,18 @@ if (!empty($phone) && strlen($phone) < 10) {
 
 // Формируем сообщение для Telegram в зависимости от формы
 $messageText = '';
-$source = '';
+$formSource = '';
 
 switch ($action) {
     case 'login':
-        $source = 'Форма входа';
+        $formSource = 'Форма входа';
         $messageText = "🔐 Новый вход";
         if (!empty($email)) $messageText .= "\nEmail: $email";
         if (!empty($phone)) $messageText .= "\nТелефон: $phone";
         break;
 
     case 'signup':
-        $source = 'Форма регистрации';
+        $formSource = 'Форма регистрации';
         $companyName = htmlspecialchars($postData['company_name'] ?? '');
         $name = htmlspecialchars($postData['name'] ?? '');
 
@@ -70,14 +71,14 @@ switch ($action) {
         break;
 
     case 'newsletter':
-        $source = 'Форма подписки внизу страницы';
+        $formSource = 'Форма подписки внизу страницы';
         $messageText = "📰 Новый потенциальный клиент";
         if (!empty($email)) $messageText .= "\nEmail: $email";
         if (!empty($phone)) $messageText .= "\nТелефон: $phone";
         break;
 
     case 'contact':
-        $source = 'Контактная форма';
+        $formSource = 'Контактная форма';
         $name = htmlspecialchars($postData['name'] ?? '');
         $message = htmlspecialchars($postData['message'] ?? '');
 
@@ -89,14 +90,14 @@ switch ($action) {
         break;
 
     case 'demo':
-        $source = 'Запрос демо';
+        $formSource = 'Запрос демо';
         $messageText = "🎮 Новый запрос на демо";
         if (!empty($email)) $messageText .= "\nEmail: $email";
         if (!empty($phone)) $messageText .= "\nТелефон: $phone";
         break;
 
     case 'register':
-        $source = 'Модальная форма регистрации';
+        $formSource = 'Модальная форма регистрации';
         $name = htmlspecialchars($postData['name'] ?? '');
         $companyName = htmlspecialchars($postData['company_name'] ?? '');
 
@@ -108,21 +109,46 @@ switch ($action) {
         break;
 
     default:
-        $source = 'Неизвестная форма';
+        $formSource = 'Неизвестная форма';
         $messageText = "❓ Новая форма отправлена";
         if (!empty($email)) $messageText .= "\nEmail: $email";
         if (!empty($phone)) $messageText .= "\nТелефон: $phone";
 
         // Добавляем все остальные поля
         foreach ($postData as $key => $value) {
-            if (!in_array($key, ['email', 'phone', 'action'])) {
+            if (!in_array($key, ['email', 'phone', 'action', 'source'])) {
                 $messageText .= "\n" . htmlspecialchars($key) . ": " . htmlspecialchars($value);
             }
         }
 }
 
+// Добавляем информацию об источнике клика
+$clickSource = "Неизвестный источник";
+
+// Расшифровываем источник клика
+if (strpos($source, 'header_') !== false) {
+    $clickSource = "Кнопка в шапке сайта";
+} elseif (strpos($source, 'hero_') !== false) {
+    $clickSource = "Кнопка в главном блоке";
+} elseif (strpos($source, 'pricing_') !== false) {
+    // Извлекаем название тарифа
+    $planName = str_replace('pricing_', '', $source);
+    $planName = ucfirst(str_replace('_', ' ', $planName));
+    $clickSource = "Тариф: $planName";
+} elseif (strpos($source, 'service_') !== false) {
+    // Извлекаем название услуги
+    $serviceName = str_replace('service_', '', $source);
+    $serviceName = ucfirst(str_replace('_', ' ', $serviceName));
+    $clickSource = "Услуга: $serviceName";
+} elseif ($source == 'bottom_cta') {
+    $clickSource = "Кнопка в нижнем блоке призыва к действию";
+} else {
+    $clickSource = "Источник: $source";
+}
+
 // Добавляем дополнительную информацию
-$messageText .= "\n\n📊 Источник: $source";
+$messageText .= "\n\n📊 Форма: $formSource";
+$messageText .= "\n🔍 Источник клика: $clickSource";
 $messageText .= "\n🕒 Дата: " . date('Y-m-d H:i:s');
 $messageText .= "\n🌐 IP: " . $_SERVER['REMOTE_ADDR'];
 $messageText .= "\n🔍 User-Agent: " . $_SERVER['HTTP_USER_AGENT'];
@@ -153,6 +179,6 @@ if ($telegramError) {
 // Возвращаем успешный ответ пользователю
 echo json_encode([
     'success' => true,
-    'message' => 'Спасибо! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.',
+    'message' => 'Спасибо! Твоя заявка принята. Мы свяжемся с тобой в ближайшее время.',
     'redirect' => $action === 'signup' || $action === 'register' ? '/welcome' : null
 ]);
