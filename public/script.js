@@ -396,4 +396,155 @@ slideDownStyle.textContent = `
 `;
 document.head.appendChild(slideDownStyle);
 
+// Модальное окно регистрации
+const registerModal = document.getElementById('registerModal');
+const registerButtons = document.querySelectorAll('.btn-primary, .header-cta, .plan-button');
+const modalClose = document.querySelector('.modal-close');
+const registerForm = document.getElementById('registerForm');
+const formSuccess = document.querySelector('.form-success');
+const formLoading = document.querySelector('.form-loading');
+
+// Открытие модального окна при клике на кнопки
+registerButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        openModal();
+    });
+});
+
+// Закрытие модального окна при клике на крестик
+if (modalClose) {
+    modalClose.addEventListener('click', function() {
+        closeModal();
+    });
+}
+
+// Закрытие модального окна при клике вне его
+window.addEventListener('click', function(e) {
+    if (e.target === registerModal) {
+        closeModal();
+    }
+});
+
+// Функция открытия модального окна
+function openModal() {
+    if (registerModal) {
+        document.body.style.overflow = 'hidden'; // Запрещаем прокрутку страницы
+        registerModal.classList.add('show');
+    }
+}
+
+// Функция закрытия модального окна
+function closeModal() {
+    if (registerModal) {
+        registerModal.classList.remove('show');
+        setTimeout(() => {
+            document.body.style.overflow = ''; // Возвращаем прокрутку страницы
+        }, 300);
+    }
+}
+
+// Валидация формы
+if (registerForm) {
+    registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const emailError = document.getElementById('emailError');
+        const phoneError = document.getElementById('phoneError');
+
+        let isValid = true;
+
+        // Скрываем ошибки
+        emailError.style.display = 'none';
+        phoneError.style.display = 'none';
+
+        // Проверяем, что хотя бы одно из полей email или телефон заполнено
+        if (!emailInput.value && !phoneInput.value) {
+            emailError.textContent = 'Введите email или телефон';
+            emailError.style.display = 'block';
+            isValid = false;
+        }
+
+        // Проверяем формат email, если он заполнен
+        if (emailInput.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+            emailError.textContent = 'Пожалуйста, введите корректный email';
+            emailError.style.display = 'block';
+            isValid = false;
+        }
+
+        // Проверяем формат телефона, если он заполнен
+        if (phoneInput.value && !/^[+]?[0-9]{10,15}$/.test(phoneInput.value.replace(/\D/g, ''))) {
+            phoneError.textContent = 'Пожалуйста, введите корректный номер телефона';
+            phoneError.style.display = 'block';
+            isValid = false;
+        }
+
+        if (isValid) {
+            // Показываем индикатор загрузки
+            formLoading.style.display = 'block';
+
+            // Собираем данные формы
+            const formData = new FormData(registerForm);
+
+            // Отправляем данные на сервер
+            fetch('/api_handler.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    formLoading.style.display = 'none';
+
+                    if (data.success) {
+                        // Показываем сообщение об успехе
+                        registerForm.style.display = 'none';
+                        formSuccess.style.display = 'block';
+
+                        // Если указан редирект, перенаправляем через 2 секунды
+                        if (data.redirect) {
+                            setTimeout(() => {
+                                window.location.href = data.redirect;
+                            }, 2000);
+                        } else {
+                            // Закрываем модальное окно через 3 секунды
+                            setTimeout(() => {
+                                closeModal();
+                                // Сбрасываем форму
+                                setTimeout(() => {
+                                    registerForm.reset();
+                                    registerForm.style.display = 'block';
+                                    formSuccess.style.display = 'none';
+                                }, 300);
+                            }, 3000);
+                        }
+                    } else {
+                        // Показываем ошибку
+                        alert(data.message || 'Произошла ошибка при отправке формы');
+                    }
+                })
+                .catch(error => {
+                    formLoading.style.display = 'none';
+                    console.error('Error:', error);
+                    alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте позже.');
+                });
+        }
+    });
+}
+
+// Маска для телефона
+const phoneInput = document.getElementById('phone');
+if (phoneInput) {
+    phoneInput.addEventListener('input', function(e) {
+        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+        if (!x[1]) {
+            e.target.value = '';
+            return;
+        }
+        e.target.value = '+' + x[1] + (x[2] ? ' (' + x[2] + ')' : '') + (x[3] ? ' ' + x[3] : '') +
+            (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
+    });
+}
+
 console.log('🐙 HACCPro loaded successfully!');

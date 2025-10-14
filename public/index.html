@@ -402,5 +402,43 @@
         <p>&copy; 2025 HACCPro. Все права защищены. Сделано с <i class="fas fa-heart"></i> для пищевой индустрии</p>
     </div>
 </footer>
+<!-- Модальное окно регистрации -->
+<div id="registerModal" class="modal">
+    <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <div class="modal-header">
+            <h3>Начните работу с HACCPro</h3>
+            <p>Заполните форму, чтобы получить доступ к системе</p>
+        </div>
+        <div class="form-success">
+            Спасибо! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.
+        </div>
+        <form id="registerForm" class="modal-form">
+            <div class="form-group">
+                <label for="name">Ваше имя</label>
+                <input type="text" id="name" name="name" placeholder="Введите ваше имя" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="example@company.com">
+                <div class="form-error" id="emailError">Пожалуйста, введите корректный email</div>
+            </div>
+            <div class="form-group">
+                <label for="phone">Телефон</label>
+                <input type="tel" id="phone" name="phone" placeholder="+7 (999) 123-45-67">
+                <div class="form-error" id="phoneError">Пожалуйста, введите корректный номер телефона</div>
+            </div>
+            <div class="form-group">
+                <label for="company_name">Название компании</label>
+                <input type="text" id="company_name" name="company_name" placeholder="ООО 'Компания'">
+            </div>
+            <input type="hidden" name="action" value="register">
+            <button type="submit" class="form-submit">Зарегистрироваться</button>
+            <div class="form-loading">
+                <i class="fas fa-spinner"></i>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>
