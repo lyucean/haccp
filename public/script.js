@@ -262,6 +262,16 @@ const createMobileMenu = () => {
             nav.style.padding = '2rem';
             nav.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
         });
+
+        // Добавляем обработчики для всех пунктов меню, чтобы закрывать меню при клике
+        const navLinks = nav.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    nav.style.display = 'none';
+                }
+            });
+        });
     }
 };
 
