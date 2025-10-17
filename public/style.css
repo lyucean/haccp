@@ -125,7 +125,7 @@ header {
 
 /* Hero Section */
 .hero {
-    padding: 140px 2rem 100px;
+    padding: 140px 2rem 40px;
     background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
     position: relative;
     overflow: hidden;
@@ -261,21 +261,223 @@ header {
     position: relative;
 }
 
-.mascot-container {
+/* Контейнер эксперта */
+.expert-container {
     position: relative;
     width: 100%;
-    height: 500px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    max-width: 480px;
+    margin: 0 auto;
+    padding-bottom: 60px; /* Место для цитаты */
 }
 
-.mascot {
-    width: 300px;
-    height: 300px;
+/* Фото эксперта */
+.expert-photo {
     position: relative;
-    animation: floatMascot 4s ease-in-out infinite;
+    width: 100%;
+    border-radius: 24px;
+    overflow: visible; /* Чтобы бейджи могли выходить за границы */
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
 }
+
+.expert-photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 24px;
+}
+
+/* Цитата эксперта - НИЖЕ фото */
+.expert-quote {
+    position: relative;
+    margin-top: -55px;
+    background: white;
+    padding: 14px 18px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+    border-left: 4px solid #0066FF;
+}
+
+.quote-icon {
+    color: #0066FF;
+    font-size: 19px;
+    margin-bottom: -5px;
+    opacity: 0.5;
+}
+
+.quote-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #333;
+    margin-bottom: 4px;
+    font-style: italic;
+}
+
+.expert-info {
+    padding-top: 0;
+    flex-direction: column;
+    gap: 4px;
+    text-align: end;
+}
+
+.expert-name {
+    font-weight: 600;
+    font-size: 16px;
+    color: #0066FF;
+    align-items: center;
+    gap: 6px;
+}
+
+.verified-icon {
+    font-size: 14px;
+    color: #0066FF;
+}
+
+.expert-title {
+    font-size: 13px;
+    color: #666;
+}
+
+/* Плавающие бейджи - привязаны к фото */
+.floating-badge {
+    position: absolute;
+    background: white;
+    padding: 10px 18px;
+    border-radius: 50px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    animation: float 3s ease-in-out infinite;
+    z-index: 10;
+    white-space: nowrap;
+}
+
+.badge-1 {
+    top: 20px;
+    left: -15px;
+    animation-delay: 0s;
+}
+
+.badge-2 {
+    top: 50%;
+    right: -20px;
+    transform: translateY(-50%);
+    animation-delay: 0.7s;
+}
+
+.badge-icon {
+    color: #0066FF;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.badge-text {
+    color: #333;
+}
+
+/* Анимация плавания */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+/* Для badge-2 сохраняем центрирование */
+.badge-2 {
+    animation: float-centered 3s ease-in-out infinite;
+}
+
+@keyframes float-centered {
+    0%, 100% {
+        transform: translateY(-50%);
+    }
+    50% {
+        transform: translateY(calc(-50% - 12px));
+    }
+}
+
+/* Адаптив для планшетов */
+@media (max-width: 992px) {
+    .expert-container {
+        max-width: 400px;
+    }
+
+    .floating-badge {
+        font-size: 12px;
+        padding: 8px 14px;
+    }
+
+    .badge-1 {
+        left: -10px;
+        top: 15px;
+    }
+
+    .badge-2 {
+        right: -15px;
+    }
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+    .expert-container {
+        max-width: 100%;
+        padding: 0 15px 40px;
+    }
+
+    .expert-photo {
+        border-radius: 20px;
+    }
+
+    .expert-quote {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    .quote-text {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .floating-badge {
+        font-size: 11px;
+        padding: 6px 12px;
+    }
+
+    .badge-1 {
+        top: 10px;
+        left: 10px;
+    }
+
+    .badge-2 {
+        top: auto;
+        bottom: 10px;
+        right: 10px;
+        transform: none;
+        animation: float 3s ease-in-out infinite;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+    .floating-badge {
+        font-size: 10px;
+        padding: 5px 10px;
+        gap: 6px;
+    }
+
+    .badge-icon {
+        font-size: 14px;
+    }
+}
+
 
 @keyframes floatMascot {
     0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -284,7 +486,7 @@ header {
 
 .floating-badge {
     position: absolute;
-    background: white;
+    background: #ffffff82;
     padding: 1rem 1.5rem;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -302,20 +504,20 @@ header {
 
 .badge-1 {
     top: 10%;
-    left: -5%;
+    left: -8%;
     animation-delay: 0s;
 }
 
 .badge-2 {
     top: 50%;
-    right: -5%;
+    right: -9%;
     animation-delay: 1s;
 }
 
 .badge-3 {
-    bottom: 10%;
-    left: 5%;
-    animation-delay: 2s;
+    bottom: 22%;
+    left: -9%;
+    animation-delay: 4s;
 }
 
 .badge-icon {

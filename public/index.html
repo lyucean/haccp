@@ -33,7 +33,7 @@
     <link rel="manifest" href="img/site.webmanifest" />
 
 
-    <link type='text/css' rel='stylesheet' href='style.css' />
+    <link type='text/css' rel='stylesheet' href='style.css?v=2' />
     <!-- Добавляем Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type='text/javascript' src='script.js' defer='defer'></script>
@@ -89,28 +89,46 @@
         </div>
 
         <div class="hero-visual">
-            <div class="mascot-container">
-                <div class="mascot">
-                    <img src="octopus.svg">
+            <div class="expert-container">
+                <!-- Фото эксперта -->
+                <div class="expert-photo">
+                    <img src="img/expert2.png" alt="Владислав Батичков - эксперт по ХАССП">
+
+                    <!-- Плавающие бейджи поверх фото -->
+                    <div class="floating-badge badge-1">
+                        <span class="badge-icon"><i class="fas fa-file-alt"></i></span>
+                        <span class="badge-text">15+ документов</span>
+                    </div>
+                    <div class="floating-badge badge-2">
+                        <span class="badge-icon"><i class="fas fa-bolt"></i></span>
+                        <span class="badge-text">За 30 минут</span>
+                    </div>
+                    <div class="floating-badge badge-3">
+                        <span class="badge-icon"><i class="fas fa-shield-alt"></i></span>
+                        <span class="badge-text">Проходит проверки</span>
+                    </div>
                 </div>
 
-                <!-- Floating badges -->
-                <div class="floating-badge badge-1">
-                    <span class="badge-icon"><i class="fas fa-file-alt"></i></span>
-                    <span class="badge-text">15+ документов</span>
-                </div>
-                <div class="floating-badge badge-2">
-                    <span class="badge-icon"><i class="fas fa-bolt"></i></span>
-                    <span class="badge-text">За 30 минут</span>
-                </div>
-                <div class="floating-badge badge-3">
-                    <span class="badge-icon"><i class="fas fa-shield-alt"></i></span>
-                    <span class="badge-text">Проходит проверки</span>
+                <!-- Цитата эксперта НИЖЕ фото -->
+                <div class="expert-quote">
+                    <div class="quote-icon">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p class="quote-text">Я помог более 50 компаниям внедрить ХАССП. Теперь мы автоматизировали этот процесс, чтобы вы могли получить все документы за 30 минут без переплат консультантам.</p>
+                    <div class="expert-info">
+                        <p class="expert-name">
+                            Владислав Батичков
+                            <i class="fas fa-check-circle verified-icon"></i>
+                        </p>
+                        <p class="expert-title">Эксперт по ХАССП</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+
 
 <!-- Trust Section -->
 <section class="trust-section">
