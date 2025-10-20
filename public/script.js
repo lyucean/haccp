@@ -598,4 +598,208 @@ if (registerForm) {
     });
 }
 
+// Модальное окно для разработчиков
+const developerModal = document.getElementById('developerModal');
+const authRequired = document.getElementById('authRequired');
+const developerTools = document.getElementById('developerTools');
+
+// Функция для проверки авторизации (заглушка - в реальном проекте здесь будет проверка токена)
+function checkAuth() {
+    // В реальном проекте здесь будет проверка JWT токена или сессии
+    // Для демонстрации используем localStorage
+    const authToken = localStorage.getItem('haccpro_auth_token');
+    return authToken !== null && authToken !== '';
+}
+
+// Функция для открытия модального окна разработчиков
+function openDeveloperModal() {
+    if (developerModal) {
+        document.body.style.overflow = 'hidden';
+        developerModal.classList.add('show');
+        
+        // Проверяем авторизацию и показываем соответствующий контент
+        if (checkAuth()) {
+            authRequired.style.display = 'none';
+            developerTools.style.display = 'block';
+        } else {
+            authRequired.style.display = 'block';
+            developerTools.style.display = 'none';
+        }
+    }
+}
+
+// Функция для закрытия модального окна разработчиков
+function closeDeveloperModal() {
+    if (developerModal) {
+        developerModal.classList.remove('show');
+        setTimeout(() => {
+            document.body.style.overflow = '';
+        }, 300);
+    }
+}
+
+// Добавляем обработчики для модального окна разработчиков
+document.addEventListener('DOMContentLoaded', () => {
+    // Обработчик для ссылки "Для разработчиков" в футере
+    const developerLink = document.querySelector('a[href="#"]:contains("Для разработчиков")');
+    
+    // Находим ссылку по тексту
+    const footerLinks = document.querySelectorAll('.footer-section a');
+    footerLinks.forEach(link => {
+        if (link.textContent.includes('Для разработчиков')) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                openDeveloperModal();
+            });
+        }
+    });
+
+    // Закрытие модального окна разработчиков при клике на крестик
+    const developerModalClose = developerModal?.querySelector('.modal-close');
+    if (developerModalClose) {
+        developerModalClose.addEventListener('click', function() {
+            closeDeveloperModal();
+        });
+    }
+
+    // Закрытие модального окна разработчиков при клике вне его
+    if (developerModal) {
+        window.addEventListener('click', function(e) {
+            if (e.target === developerModal) {
+                closeDeveloperModal();
+            }
+        });
+    }
+
+    // Обработчики для кнопок в модальном окне разработчиков
+    const toolButtons = document.querySelectorAll('.tool-button');
+    toolButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const toolName = this.closest('.tool-card').querySelector('h4').textContent;
+            console.log(`Developer tool clicked: ${toolName}`);
+            // Здесь можно добавить логику для каждого инструмента
+        });
+    });
+
+    // Обработчик для кнопки авторизации в модальном окне разработчиков
+    const authButton = document.querySelector('.auth-button');
+    if (authButton) {
+        authButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            closeDeveloperModal();
+            // Открываем модальное окно регистрации с источником "developer_auth"
+            setTimeout(() => {
+                openModalWithSource('developer_auth');
+            }, 300);
+        });
+    }
+});
+
+// Функция для симуляции авторизации (для демонстрации)
+function simulateAuth() {
+    localStorage.setItem('haccpro_auth_token', 'demo_token_' + Date.now());
+    // Обновляем контент модального окна, если оно открыто
+    if (developerModal && developerModal.classList.contains('show')) {
+        authRequired.style.display = 'none';
+        developerTools.style.display = 'block';
+    }
+}
+
+// Функции для открытия модальных окон
+function openKnowledgeBaseModal() {
+    openAuthModal('knowledgeBaseModal', 'knowledgeBaseAuth', 'knowledgeContent');
+}
+
+function openBlogModal() {
+    openAuthModal('blogModal', 'blogAuth', 'blogContent');
+}
+
+function openStoriesModal() {
+    openAuthModal('storiesModal', 'storiesAuth', 'storiesContent');
+}
+
+function openDocumentationModal() {
+    openAuthModal('documentationModal', 'documentationAuth', 'documentationContent');
+}
+
+// Универсальная функция для открытия модальных окон с авторизацией
+function openAuthModal(modalId, authElementId, contentElementId) {
+    const modal = document.getElementById(modalId);
+    const authElement = document.getElementById(authElementId);
+    const contentElement = document.getElementById(contentElementId);
+    
+    if (modal) {
+        document.body.style.overflow = 'hidden';
+        modal.classList.add('show');
+        
+        // Проверяем авторизацию и показываем соответствующий контент
+        if (checkAuth()) {
+            authElement.style.display = 'none';
+            contentElement.style.display = 'block';
+        } else {
+            authElement.style.display = 'block';
+            contentElement.style.display = 'none';
+        }
+    }
+}
+
+// Функция для закрытия всех модальных окон
+function closeAllModals() {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        modal.classList.remove('show');
+    });
+    document.body.style.overflow = '';
+}
+
+// Добавляем обработчики для новых модальных окон
+document.addEventListener('DOMContentLoaded', () => {
+    // Закрытие модальных окон при клике на крестик
+    document.querySelectorAll('.modal .modal-close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', function() {
+            const modal = this.closest('.modal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                document.body.style.overflow = '';
+            }, 300);
+        });
+    });
+
+    // Закрытие модальных окон при клике вне их
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('show');
+                setTimeout(() => {
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+        });
+    });
+
+    // Обработчики для кнопок авторизации во всех модальных окнах
+    document.querySelectorAll('.auth-button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const modal = this.closest('.modal');
+            modal.classList.remove('show');
+            // Открываем модальное окно регистрации с источником из onclick
+            setTimeout(() => {
+                const source = this.getAttribute('onclick');
+                if (source && source.includes('openModalWithSource')) {
+                    // Извлекаем источник из onclick
+                    const sourceMatch = source.match(/openModalWithSource\('([^']+)'\)/);
+                    if (sourceMatch) {
+                        openModalWithSource(sourceMatch[1]);
+                    }
+                }
+            }, 300);
+        });
+    });
+});
+
+// Добавляем функцию симуляции авторизации в глобальную область (для демонстрации)
+window.simulateAuth = simulateAuth;
+
 console.log('🐙 HACCPro loaded successfully!');
