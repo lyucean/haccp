@@ -1,6 +1,7 @@
 {
-  "name": "HACCPro",
+  "name": "HACCPro - ХАССП без головной боли",
   "short_name": "HACCPro",
+  "description": "Система для создания документов ХАССП за 30 минут",
   "icons": [
     {
       "src": "/img/android-chrome-192x192.png",
@@ -13,7 +14,9 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
+  "theme_color": "#0066FF",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
 }

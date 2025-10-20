@@ -180,5 +180,5 @@ if ($telegramError) {
 echo json_encode([
     'success' => true,
     'message' => 'Спасибо! Твоя заявка принята. Мы свяжемся с тобой в ближайшее время.',
-    'redirect' => $action === 'signup' || $action === 'register' ? '/welcome' : null
+    'redirect' => $action === 'signup' || $action === 'register' ? '/' : null
 ]);
