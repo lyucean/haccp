@@ -1,8 +1,13 @@
 // Smooth scroll для якорных ссылок
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        // Игнорируем пустые якоря (#) и якоря с onclick
+        if (href === '#' || this.hasAttribute('onclick')) {
+            return;
+        }
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const target = document.querySelector(href);
         if (target) {
             target.scrollIntoView({
                 behavior: 'smooth',
@@ -652,10 +657,7 @@ function closeDeveloperModal() {
 
 // Добавляем обработчики для модального окна разработчиков
 document.addEventListener('DOMContentLoaded', () => {
-    // Обработчик для ссылки "Для разработчиков" в футере
-    const developerLink = document.querySelector('a[href="#"]:contains("Для разработчиков")');
-    
-    // Находим ссылку по тексту
+    // Находим ссылку "Для разработчиков" по тексту
     const footerLinks = document.querySelectorAll('.footer-section a');
     footerLinks.forEach(link => {
         if (link.textContent.includes('Для разработчиков')) {
