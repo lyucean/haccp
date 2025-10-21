@@ -27,6 +27,8 @@ $action = $postData['action'] ?? '';
 $email = filter_var($postData['email'] ?? '', FILTER_SANITIZE_EMAIL);
 $phone = preg_replace('/[^0-9+]/', '', $postData['phone'] ?? ''); // Очищаем телефон от всего, кроме цифр и +
 $source = htmlspecialchars($postData['source'] ?? 'unknown'); // Источник клика
+$pageUrl = htmlspecialchars($postData['page_url'] ?? ''); // Полный URL страницы
+$pageTitle = htmlspecialchars($postData['page_title'] ?? ''); // Заголовок страницы
 
 // Проверяем наличие email или телефона
 if (empty($email) && empty($phone)) {
@@ -149,7 +151,17 @@ if (strpos($source, 'header_') !== false) {
 // Добавляем дополнительную информацию
 $messageText .= "\n\n📊 Форма: $formSource";
 $messageText .= "\n🔍 Источник клика: $clickSource";
-$messageText .= "\n🕒 Дата: " . date('Y-m-d H:i:s');
+
+// Добавляем информацию о странице откуда пришла форма
+if (!empty($pageUrl)) {
+    $messageText .= "\n\n🌐 ОТКУДА ПРИШЛА ФОРМА:";
+    $messageText .= "\n📄 URL: " . $pageUrl;
+    if (!empty($pageTitle)) {
+        $messageText .= "\n📰 Заголовок: " . $pageTitle;
+    }
+}
+
+$messageText .= "\n\n🕒 Дата: " . date('Y-m-d H:i:s');
 $messageText .= "\n🌐 IP: " . $_SERVER['REMOTE_ADDR'];
 $messageText .= "\n🔍 User-Agent: " . $_SERVER['HTTP_USER_AGENT'];
 

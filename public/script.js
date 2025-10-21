@@ -560,7 +560,11 @@ if (registerForm) {
 
             // Собираем данные формы
             const formData = new FormData(registerForm);
-
+            
+            // Добавляем информацию о текущей странице
+            formData.append('page_url', window.location.href);
+            formData.append('page_title', document.title);
+ 
             // Отправляем данные на сервер
             fetch('/api_handler.php', {
                 method: 'POST',
