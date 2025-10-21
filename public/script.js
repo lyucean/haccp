@@ -425,6 +425,14 @@ if (registerForm) {
 // Функция для открытия модального окна с указанием источника
 function openModalWithSource(source) {
     if (registerModal) {
+        // ВАЖНО: Закрываем все другие модальные окна перед открытием формы регистрации
+        const allModals = document.querySelectorAll('.modal');
+        allModals.forEach(modal => {
+            if (modal.id !== 'registerModal') {
+                modal.classList.remove('show');
+            }
+        });
+        
         // Устанавливаем источник в скрытое поле
         document.getElementById('source').value = source;
 
