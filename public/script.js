@@ -570,8 +570,8 @@ if (registerForm) {
             formData.append('page_url', window.location.href);
             formData.append('page_title', document.title);
  
-            // Отправляем данные на сервер
-            fetch('/api_handler.php', {
+            // Отправляем данные на сервер (жестко закодированный URL)
+            fetch('https://haccpro.ru/api_handler.php', {
                 method: 'POST',
                 body: formData
             })
