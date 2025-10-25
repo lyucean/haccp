@@ -88,9 +88,8 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd /var/www/haccpro.ru/
-            docker compose --profile prod down
-            docker compose --profile prod build --no-cache
-            docker compose --profile prod up -d
+            # Пересобираем и перезапускаем только изменённые сервисы
+            docker compose --profile prod up -d --build
             sleep 10
             docker compose --profile prod exec -T php-fpm php artisan key:generate --force || true
             docker compose --profile prod exec -T php-fpm php artisan migrate --force || true
