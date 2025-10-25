@@ -18,12 +18,9 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     jpegoptim optipng pngquant gifsicle \
     vim \
-    unzip \
-    git \
-    curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath zip intl
 
 # Устанавливаем Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -35,14 +32,11 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 # Устанавливаем рабочую директорию
 WORKDIR /usr/share/nginx/html
 
-# Копируем composer файлы
-COPY composer.json composer.lock ./
-
-# Устанавливаем PHP зависимости
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Копируем остальные файлы
+# Копируем ВСЕ файлы проекта СНАЧАЛА
 COPY . .
+
+# Устанавливаем PHP зависимости (теперь artisan уже есть)
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Устанавливаем права доступа
 RUN chown -R www-data:www-data /usr/share/nginx/html \
