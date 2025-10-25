@@ -49,7 +49,7 @@ sleep 30
 
 # 7. Устанавливаем зависимости
 echo "7️⃣ Устанавливаем зависимости..."
-docker compose exec -T php-fpm composer install --no-dev --optimize-autoloader
+docker compose exec -T php-fpm bash -c "cd /usr/share/nginx/html && composer install --no-dev --optimize-autoloader"
 
 # 8. Создаем .env если его нет
 echo "8️⃣ Проверяем .env..."
@@ -86,22 +86,22 @@ fi
 
 # 9. Генерируем APP_KEY
 echo "9️⃣ Генерируем APP_KEY..."
-docker compose exec -T php-fpm php artisan key:generate --force
+docker compose exec -T php-fpm bash -c "cd /usr/share/nginx/html && php artisan key:generate --force"
 
 # 10. Настраиваем права доступа
 echo "🔟 Настраиваем права доступа..."
-docker compose exec -T php-fpm chmod -R 755 storage bootstrap/cache
-docker compose exec -T php-fpm chown -R www-data:www-data storage bootstrap/cache
+docker compose exec -T php-fpm bash -c "cd /usr/share/nginx/html && chmod -R 755 storage bootstrap/cache"
+docker compose exec -T php-fpm bash -c "cd /usr/share/nginx/html && chown -R www-data:www-data storage bootstrap/cache"
 
 # 11. Выполняем миграции
 echo "1️⃣1️⃣ Выполняем миграции..."
-docker compose exec -T php-fpm php artisan migrate --force
+docker compose exec -T php-fpm bash -c "cd /usr/share/nginx/html && php artisan migrate --force"
 
 # 12. Кэшируем конфигурацию
 echo "1️⃣2️⃣ Кэшируем конфигурацию..."
-docker compose exec -T php-fpm php artisan config:cache
-docker compose exec -T php-fpm php artisan route:cache
-docker compose exec -T php-fpm php artisan view:cache
+docker compose exec -T php-fpm bash -c "cd /usr/share/nginx/html && php artisan config:cache"
+docker compose exec -T php-fpm bash -c "cd /usr/share/nginx/html && php artisan route:cache"
+docker compose exec -T php-fpm bash -c "cd /usr/share/nginx/html && php artisan view:cache"
 
 # 13. Проверяем статус
 echo "1️⃣3️⃣ Проверяем статус..."
