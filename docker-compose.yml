@@ -46,7 +46,9 @@ services:
 
   # PHP-FPM для Laravel
   php-fpm:
-    image: php:8.3-fpm
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: haccpro-php
     restart: unless-stopped
     volumes:
