@@ -1,2 +1,5 @@
+.env
 /.idea
 /public/.env
+/vendor
+/node_modules
