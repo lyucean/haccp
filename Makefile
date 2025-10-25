@@ -1,124 +1,51 @@
-# HACCPro Laravel Docker Makefile
+.PHONY: help dev prod stop restart clean logs ps
 
-.PHONY: help build up down restart logs shell migrate seed fresh install setup
+# Переменные
+COMPOSE = docker-compose
+PROJECT = haccpro
 
-# Показать справку
-help:
-	@echo "🐙 HACCPro Laravel Docker Commands:"
+help: ## Показать справку по командам
+	@echo "Использование:"
+	@echo "  make [команда]"
 	@echo ""
-	@echo "  make setup     - Первоначальная настройка"
-	@echo "  make build     - Собрать Docker образы"
-	@echo "  make up        - Запустить контейнеры для разработки"
-	@echo "  make up-prod   - Запустить контейнеры для продакшена"
-	@echo "  make down      - Остановить контейнеры"
-	@echo "  make restart   - Перезапустить контейнеры"
-	@echo "  make logs      - Показать логи"
-	@echo "  make shell     - Войти в контейнер приложения"
-	@echo "  make migrate   - Выполнить миграции"
-	@echo "  make seed      - Заполнить базу тестовыми данными"
-	@echo "  make fresh     - Пересоздать базу данных"
-	@echo "  make install   - Установить зависимости"
-	@echo "  make clear     - Очистить кэш"
-	@echo "  make admin     - Создать пользователя админки"
-	@echo ""
-	@echo "🚀 Деплой команды:"
-	@echo "  make deploy    - Деплой на продакшен"
-	@echo "  make status    - Проверка статуса"
-	@echo "  make monitor   - Мониторинг логов"
-	@echo ""
+	@echo "Команды:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
-# Первоначальная настройка
-setup:
-	@echo "🐙 Настройка HACCPro Laravel..."
-	@./docker-setup.sh
-	@make build
-	@make up
-	@make install
-	@make migrate
-	@echo "✅ Настройка завершена! Откройте http://localhost"
+dev: ## Запустить проект в режиме разработки
+	$(COMPOSE) --profile dev up -d
 
-# Собрать образы
-build:
-	@echo "🔨 Сборка Docker образов..."
-	@docker-compose build
+prod: ## Запустить проект в продакшн режиме
+	$(COMPOSE) --profile prod up -d
 
-# Запустить контейнеры для разработки
-up:
-	@echo "🚀 Запуск контейнеров для разработки..."
-	@docker-compose --profile dev up -d
+stop: ## Остановить все контейнеры
+	$(COMPOSE) stop
 
-# Запустить контейнеры для продакшена
-up-prod:
-	@echo "🚀 Запуск контейнеров для продакшена..."
-	@docker-compose --profile prod up -d
+restart: ## Перезапустить все контейнеры
+	$(COMPOSE) restart
 
-# Остановить контейнеры
-down:
-	@echo "🛑 Остановка контейнеров..."
-	@docker-compose down
+clean: ## Остановить и удалить все контейнеры
+	$(COMPOSE) down
 
-# Перезапустить контейнеры
-restart:
-	@echo "🔄 Перезапуск контейнеров..."
-	@docker-compose restart
+logs: ## Показать логи всех контейнеров
+	$(COMPOSE) logs -f
 
-# Показать логи
-logs:
-	@echo "📋 Логи контейнеров..."
-	@docker-compose logs -f
+ps: ## Показать статус контейнеров
+	$(COMPOSE) ps
 
-# Войти в контейнер приложения
-shell:
-	@echo "🐚 Вход в контейнер приложения..."
-	@docker-compose exec php-fpm bash
+dev-build: ## Собрать и запустить контейнеры для разработки
+	$(COMPOSE) --profile dev up -d --build
 
-# Выполнить миграции
-migrate:
-	@echo "🗄️ Выполнение миграций..."
-	@docker-compose exec php-fpm php artisan migrate --force
+prod-build: ## Собрать и запустить контейнеры для продакшена
+	$(COMPOSE) --profile prod up -d --build
 
-# Заполнить базу тестовыми данными
-seed:
-	@echo "🌱 Заполнение базы тестовыми данными..."
-	@docker-compose exec php-fpm php artisan db:seed
+nginx-logs: ## Показать логи Nginx
+	docker logs haccpro-nginx || docker logs haccpro-nginx-dev
 
-# Пересоздать базу данных
-fresh:
-	@echo "🔄 Пересоздание базы данных..."
-	@docker-compose exec php-fpm php artisan migrate:fresh --seed
+php-logs: ## Показать логи PHP
+	docker logs haccpro-php
 
-# Установить зависимости
-install:
-	@echo "📦 Установка зависимостей..."
-	@docker-compose exec php-fpm composer install --no-dev --optimize-autoloader
-	@docker-compose exec php-fpm php artisan config:cache
-	@docker-compose exec php-fpm php artisan route:cache
-	@docker-compose exec php-fpm php artisan view:cache
+shell-nginx: ## Войти в контейнер Nginx
+	docker exec -it $$(docker ps -q -f name=haccpro-nginx -f name=haccpro-nginx-dev) /bin/bash
 
-# Очистить кэш
-clear:
-	@echo "🧹 Очистка кэша..."
-	@docker-compose exec php-fpm php artisan cache:clear
-	@docker-compose exec php-fpm php artisan config:clear
-	@docker-compose exec php-fpm php artisan route:clear
-	@docker-compose exec php-fpm php artisan view:clear
-
-# Создать пользователя админки
-admin:
-	@echo "👤 Создание пользователя админки..."
-	@docker-compose exec php-fpm php artisan make:filament-user
-
-# Деплой на продакшен
-deploy:
-	@echo "🚀 Деплой на продакшен..."
-	@./deploy.sh
-
-# Проверка статуса
-status:
-	@echo "📊 Статус контейнеров..."
-	@docker-compose ps
-
-# Мониторинг логов
-monitor:
-	@echo "📋 Мониторинг логов..."
-	@docker-compose logs -f
+shell-php: ## Войти в контейнер PHP
+	docker exec -it haccpro-php /bin/bash
