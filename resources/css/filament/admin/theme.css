@@ -1,0 +1,68 @@
+/* Кастомные стили для Filament админки */
+
+/* Уменьшаем размер заголовков разделов */
+.fi-sidebar-nav-item-label {
+    font-size: 0.875rem !important;
+}
+
+/* Увеличиваем ширину основного контента */
+.fi-main {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+/* Уменьшаем ширину сайдбара */
+.fi-sidebar {
+    width: 200px !important;
+}
+
+/* Увеличиваем ширину таблицы */
+.fi-table {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+/* Уменьшаем отступы в таблице */
+.fi-ta-table {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Увеличиваем ширину контейнера */
+.fi-main-content {
+    max-width: none !important;
+    padding: 1rem 2rem !important;
+}
+
+/* Уменьшаем размер заголовка страницы */
+.fi-header-heading {
+    font-size: 1.5rem !important;
+}
+
+/* Увеличиваем ширину таблицы заявок */
+.fi-ta-table-container {
+    overflow-x: auto;
+    width: 100%;
+}
+
+/* Уменьшаем отступы в ячейках таблицы */
+.fi-ta-table td,
+.fi-ta-table th {
+    padding: 0.5rem 0.75rem !important;
+}
+
+/* Увеличиваем ширину колонок */
+.fi-ta-table {
+    table-layout: auto !important;
+}
+
+/* Уменьшаем размер текста в сайдбаре */
+.fi-sidebar-nav-item {
+    font-size: 0.875rem !important;
+}
+
+/* Увеличиваем ширину основного контента */
+.fi-main-content > div {
+    max-width: none !important;
+    width: 100% !important;
+}
