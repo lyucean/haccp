@@ -40,73 +40,73 @@ setup:
 # Собрать образы
 build:
 	@echo "🔨 Сборка Docker образов..."
-	@docker-compose build
+	@docker compose build
 
 # Запустить контейнеры для разработки
 up:
 	@echo "🚀 Запуск контейнеров для разработки..."
-	@docker-compose --profile dev up -d
+	@docker compose --profile dev up -d
 
 # Запустить контейнеры для продакшена
 up-prod:
 	@echo "🚀 Запуск контейнеров для продакшена..."
-	@docker-compose --profile prod up -d
+	@docker compose --profile prod up -d
 
 # Остановить контейнеры
 down:
 	@echo "🛑 Остановка контейнеров..."
-	@docker-compose down
+	@docker compose down
 
 # Перезапустить контейнеры
 restart:
 	@echo "🔄 Перезапуск контейнеров..."
-	@docker-compose restart
+	@docker compose restart
 
 # Показать логи
 logs:
 	@echo "📋 Логи контейнеров..."
-	@docker-compose logs -f
+	@docker compose logs -f
 
 # Войти в контейнер приложения
 shell:
 	@echo "🐚 Вход в контейнер приложения..."
-	@docker-compose exec php-fpm bash
+	@docker compose exec php-fpm bash
 
 # Выполнить миграции
 migrate:
 	@echo "🗄️ Выполнение миграций..."
-	@docker-compose exec php-fpm php artisan migrate --force
+	@docker compose exec php-fpm php artisan migrate --force
 
 # Заполнить базу тестовыми данными
 seed:
 	@echo "🌱 Заполнение базы тестовыми данными..."
-	@docker-compose exec php-fpm php artisan db:seed
+	@docker compose exec php-fpm php artisan db:seed
 
 # Пересоздать базу данных
 fresh:
 	@echo "🔄 Пересоздание базы данных..."
-	@docker-compose exec php-fpm php artisan migrate:fresh --seed
+	@docker compose exec php-fpm php artisan migrate:fresh --seed
 
 # Установить зависимости
 install:
 	@echo "📦 Установка зависимостей..."
-	@docker-compose exec php-fpm composer install --no-dev --optimize-autoloader
-	@docker-compose exec php-fpm php artisan config:cache
-	@docker-compose exec php-fpm php artisan route:cache
-	@docker-compose exec php-fpm php artisan view:cache
+	@docker compose exec php-fpm composer install --no-dev --optimize-autoloader
+	@docker compose exec php-fpm php artisan config:cache
+	@docker compose exec php-fpm php artisan route:cache
+	@docker compose exec php-fpm php artisan view:cache
 
 # Очистить кэш
 clear:
 	@echo "🧹 Очистка кэша..."
-	@docker-compose exec php-fpm php artisan cache:clear
-	@docker-compose exec php-fpm php artisan config:clear
-	@docker-compose exec php-fpm php artisan route:clear
-	@docker-compose exec php-fpm php artisan view:clear
+	@docker compose exec php-fpm php artisan cache:clear
+	@docker compose exec php-fpm php artisan config:clear
+	@docker compose exec php-fpm php artisan route:clear
+	@docker compose exec php-fpm php artisan view:clear
 
 # Создать пользователя админки
 admin:
 	@echo "👤 Создание пользователя админки..."
-	@docker-compose exec php-fpm php artisan make:filament-user
+	@docker compose exec php-fpm php artisan make:filament-user
 
 # Деплой на продакшен
 deploy:
@@ -116,9 +116,9 @@ deploy:
 # Проверка статуса
 status:
 	@echo "📊 Статус контейнеров..."
-	@docker-compose ps
+	@docker compose ps
 
 # Мониторинг логов
 monitor:
 	@echo "📋 Мониторинг логов..."
-	@docker-compose logs -f
+	@docker compose logs -f
