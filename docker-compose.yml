@@ -7,7 +7,7 @@ services:
     hostname: haccpro.ru
     volumes:
       - ./docker/nginx/sites/haccp.conf:/etc/nginx/conf.d/default.conf
-      - ./public:/usr/share/nginx/html/public:ro
+      - ./:/usr/share/nginx/html:ro
     environment:
       - NGINX_HOST=haccpro.ru
       - NGINX_INDEX=index.php

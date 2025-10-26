@@ -90,8 +90,17 @@ jobs:
             cd /var/www/haccpro.ru/
             # Пересобираем и перезапускаем только изменённые сервисы
             docker compose --profile prod up -d --build
-            sleep 10
+            sleep 15
+            # Генерируем APP_KEY если его нет
             docker compose --profile prod exec -T php-fpm php artisan key:generate --force || true
+            # Обновляем .env файл на сервере с новым ключом
+            APP_KEY=$(docker compose --profile prod exec -T php-fpm php artisan tinker --execute="echo config('app.key');" 2>/dev/null | grep -v "^$" | tail -1) || true
+            if [ ! -z "$APP_KEY" ] && [ ! -z "$(echo $APP_KEY | grep 'base64:')" ]; then
+              sed -i "s|^APP_KEY=.*|APP_KEY=$APP_KEY|" /var/www/haccpro.ru/.env || true
+            fi
+            # Перезапускаем PHP-FPM для применения нового ключа
+            docker compose --profile prod restart php-fpm
+            sleep 5
             docker compose --profile prod exec -T php-fpm php artisan migrate --force || true
             docker compose --profile prod exec -T php-fpm php artisan config:cache || true
             docker compose --profile prod exec -T php-fpm php artisan route:cache || true
