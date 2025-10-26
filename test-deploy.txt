@@ -1,3 +1,4 @@
-Sun Oct 26 22:57:05 MSK 2025
-Commit: 3eb16ff55e98410ac232fd08cb4e75a96fa78d50
-Time: Sun Oct 26 22:57:05 MSK 2025
+Deployment Test File
+Date: Sun Oct 26 23:15:00 MSK 2025
+Commit: Testing deployment fix for vendor directory
+Status: Testing if public directory is properly mounted in Nginx
