@@ -24,12 +24,8 @@ jobs:
           echo "LOG_CHANNEL=stack" >> .env
           echo "LOG_LEVEL=error" >> .env
           echo "" >> .env
-          echo "DB_CONNECTION=mysql" >> .env
-          echo "DB_HOST=mysql" >> .env
-          echo "DB_PORT=3306" >> .env
-          echo "DB_DATABASE=haccp_laravel" >> .env
-          echo "DB_USERNAME=haccp_user" >> .env
-          echo "DB_PASSWORD=haccp_password" >> .env
+          echo "DB_CONNECTION=sqlite" >> .env
+          echo "DB_DATABASE=/usr/share/nginx/html/database/database.sqlite" >> .env
           echo "" >> .env
           echo "BROADCAST_DRIVER=log" >> .env
           echo "CACHE_DRIVER=redis" >> .env
