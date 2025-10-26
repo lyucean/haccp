@@ -88,6 +88,9 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd /var/www/haccpro.ru/
+            # Исправляем права доступа для PHP-FPM
+            chown -R www-data:www-data storage bootstrap/cache
+            chmod -R 775 storage bootstrap/cache
             # Пересобираем и перезапускаем только изменённые сервисы
             docker compose --profile prod up -d --build
             sleep 15
