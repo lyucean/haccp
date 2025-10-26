@@ -38,15 +38,10 @@ COPY . .
 # Устанавливаем PHP зависимости (теперь artisan уже есть)
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Создаём директорию для SQLite базы данных
-RUN mkdir -p /usr/share/nginx/html/database \
-    && touch /usr/share/nginx/html/database/database.sqlite
-
 # Устанавливаем права доступа
 RUN chown -R www-data:www-data /usr/share/nginx/html \
     && chmod -R 755 /usr/share/nginx/html/storage \
-    && chmod -R 755 /usr/share/nginx/html/bootstrap/cache \
-    && chmod -R 755 /usr/share/nginx/html/database
+    && chmod -R 755 /usr/share/nginx/html/bootstrap/cache
 
 # Открываем порт 9000 для PHP-FPM
 EXPOSE 9000
