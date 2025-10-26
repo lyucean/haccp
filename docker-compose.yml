@@ -7,7 +7,6 @@ services:
     hostname: haccpro.ru
     volumes:
       - ./docker/nginx/sites/haccp.conf:/etc/nginx/conf.d/default.conf
-      - ./:/usr/share/nginx/html:ro
     environment:
       - NGINX_HOST=haccpro.ru
       - NGINX_INDEX=index.php
@@ -52,8 +51,10 @@ services:
     container_name: haccpro-php
     restart: unless-stopped
     volumes:
-      # Монтируем весь проект (как в dev)
-      - ./:/usr/share/nginx/html
+      # Монтируем только то, что нужно менять
+      - ./storage:/usr/share/nginx/html/storage
+      - ./bootstrap/cache:/usr/share/nginx/html/bootstrap/cache
+      - ./.env:/usr/share/nginx/html/.env
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - web
