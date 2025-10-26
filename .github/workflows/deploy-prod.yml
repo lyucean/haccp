@@ -104,8 +104,8 @@ jobs:
             # Перезапускаем PHP-FPM для применения нового ключа
             docker compose --profile prod restart php-fpm
             sleep 5
+            docker compose --profile prod exec -T php-fpm php artisan config:clear || true
             docker compose --profile prod exec -T php-fpm php artisan migrate --force || true
-            docker compose --profile prod exec -T php-fpm php artisan config:cache || true
             docker compose --profile prod exec -T php-fpm php artisan route:cache || true
             docker compose --profile prod exec -T php-fpm php artisan view:cache || true
             docker compose --profile prod ps
