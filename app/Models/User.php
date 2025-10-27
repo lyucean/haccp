@@ -50,7 +50,7 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Determine if the user can access Filament.
      */
-    public function canAccessFilament(): bool
+    public function canAccessPanel(\Filament\Panel $panel): bool
     {
         return true; // Разрешаем доступ всем пользователям
     }
