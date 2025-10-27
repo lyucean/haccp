@@ -23,6 +23,11 @@ class UserResource extends Resource
     
     protected static ?int $navigationSort = 1;
 
+    public static function getNavigationIcon(): string
+    {
+        return 'heroicon-o-users';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -102,12 +107,12 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                \Filament\Tables\Actions\EditAction::make()
+                \Filament\Actions\EditAction::make()
                     ->label('Редактировать'),
             ])
             ->bulkActions([
-                \Filament\Tables\Actions\BulkActionGroup::make([
-                    \Filament\Tables\Actions\DeleteBulkAction::make()
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make()
                         ->label('Удалить выбранных'),
                 ]),
             ])
