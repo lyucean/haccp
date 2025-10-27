@@ -47,7 +47,7 @@ jobs:
           echo "MAIL_PORT=1025" >> .env
           echo "MAIL_USERNAME=null" >> .env
           echo "MAIL_PASSWORD=null" >> .env
-          echo "MAIL_ENCRYPTION=null" >> .env
+          echo "MAIL_ENCRYPTION=null" >> .env 
           echo "MAIL_FROM_ADDRESS=\"hello@example.com\"" >> .env
           echo "MAIL_FROM_NAME=\"HACCPro\"" >> .env
           echo "" >> .env
@@ -79,8 +79,9 @@ jobs:
             chown -R www-data:www-data storage bootstrap/cache .env
             chmod -R 775 storage bootstrap/cache
             
-            # Быстрый деплой: только перезапуск без пересборки
-            docker compose --profile prod up -d --no-build
+            # Быстрый деплой: пересборка только PHP-FPM контейнера
+            docker compose --profile prod build php-fpm
+            docker compose --profile prod up -d
             
             # Ждем только 3 секунды вместо 15
             sleep 3
