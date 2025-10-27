@@ -30,6 +30,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('HACCPro')
+            ->brandLogo(asset('img/logo.svg'))
+            ->favicon(asset('img/favicon.ico'))
             ->maxContentWidth('8xl')
             ->colors([
                 'primary' => Color::Amber,
