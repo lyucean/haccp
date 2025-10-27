@@ -1,4 +1,0 @@
-Deployment Test File
-Date: 2025-10-26 23:30:01 MSK
-Commit: Testing Laravel deployment with MySQL fix
-Status: Server space cleared, MySQL user recreated

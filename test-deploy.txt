@@ -1,4 +1,0 @@
-Deployment Test File
-Date: Sun Oct 26 23:15:00 MSK 2025
-Commit: Testing deployment fix for vendor directory
-Status: Testing if public directory is properly mounted in Nginx
