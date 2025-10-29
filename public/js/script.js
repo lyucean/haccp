@@ -532,14 +532,20 @@ if (registerForm) {
 
         const emailInput = document.getElementById('email');
         const phoneInput = document.getElementById('phone');
+        const passwordInput = document.getElementById('password');
+        const passwordConfirmationInput = document.getElementById('password_confirmation');
         const emailError = document.getElementById('emailError');
         const phoneError = document.getElementById('phoneError');
+        const passwordError = document.getElementById('passwordError');
+        const passwordConfirmationError = document.getElementById('passwordConfirmationError');
 
         let isValid = true;
 
         // Скрываем ошибки
         emailError.style.display = 'none';
         phoneError.style.display = 'none';
+        passwordError.style.display = 'none';
+        passwordConfirmationError.style.display = 'none';
 
         // Проверяем, что хотя бы одно из полей email или телефон заполнено
         if (!emailInput.value && !phoneInput.value) {
@@ -559,6 +565,20 @@ if (registerForm) {
         if (phoneInput.value && !/^[+]?[0-9]{10,15}$/.test(phoneInput.value.replace(/\D/g, ''))) {
             phoneError.textContent = 'Проверь формат телефона';
             phoneError.style.display = 'block';
+            isValid = false;
+        }
+
+        // Проверяем пароль
+        if (passwordInput.value && passwordInput.value.length < 6) {
+            passwordError.textContent = 'Пароль должен содержать минимум 6 символов';
+            passwordError.style.display = 'block';
+            isValid = false;
+        }
+
+        // Проверяем подтверждение пароля
+        if (passwordInput.value && passwordConfirmationInput.value && passwordInput.value !== passwordConfirmationInput.value) {
+            passwordConfirmationError.textContent = 'Пароли не совпадают';
+            passwordConfirmationError.style.display = 'block';
             isValid = false;
         }
 

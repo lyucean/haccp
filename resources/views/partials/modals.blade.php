@@ -28,6 +28,16 @@
                 <label for="company_name">Название компании</label>
                 <input type="text" id="company_name" name="company_name" placeholder="Кафе 'Вкусно и точка'">
             </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" placeholder="Придумай пароль" required>
+                <div class="form-error" id="passwordError">Пароль должен содержать минимум 6 символов</div>
+            </div>
+            <div class="form-group">
+                <label for="password_confirmation">Подтверждение пароля</label>
+                <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Повтори пароль" required>
+                <div class="form-error" id="passwordConfirmationError">Пароли не совпадают</div>
+            </div>
             <input type="hidden" name="action" value="register">
             <input type="hidden" name="source" id="source" value="unknown">
             @csrf

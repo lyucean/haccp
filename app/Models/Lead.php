@@ -11,6 +11,8 @@ class Lead extends Model
         'email',
         'phone',
         'company_name',
+        'password',
+        'password_confirmation',
         'action',
         'source',
         'message',

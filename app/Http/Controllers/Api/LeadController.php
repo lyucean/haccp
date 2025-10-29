@@ -25,6 +25,8 @@ class LeadController extends Controller
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:255',
             'company_name' => 'nullable|string|max:255',
+            'password' => 'nullable|string|min:6|max:255',
+            'password_confirmation' => 'nullable|string|same:password',
             'action' => 'required|string|in:register,login,contact,demo,newsletter',
             'source' => 'nullable|string|max:255',
             'message' => 'nullable|string',
@@ -52,6 +54,14 @@ class LeadController extends Controller
         if (!empty($data['phone'])) {
             $data['phone'] = preg_replace('/[^0-9+]/', '', $data['phone']);
         }
+
+        // Хешируем пароль, если он указан
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
+
+        // Удаляем password_confirmation, так как он не нужен в БД
+        unset($data['password_confirmation']);
 
         // Добавляем IP адрес
         $data['ip_address'] = $request->ip();
