@@ -21,15 +21,28 @@ class LeadController extends Controller
         
         // Валидация данных
         $validator = Validator::make($request->all(), [
-            'name' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|string|max:255',
-            'company_name' => 'nullable|string|max:255',
-            'password' => 'nullable|string|min:6|max:255',
-            'password_confirmation' => 'nullable|string|same:password',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:255|regex:/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/',
+            'company_name' => 'required|string|max:255',
+            'password' => 'required|string|min:6|max:255',
+            'password_confirmation' => 'required|string|same:password',
             'action' => 'required|string|in:register,login,contact,demo,newsletter',
             'source' => 'nullable|string|max:255',
             'message' => 'nullable|string',
+        ], [
+            'name.required' => 'Имя обязательно для заполнения',
+            'email.required' => 'Email обязателен для заполнения',
+            'email.email' => 'Проверьте формат email адреса',
+            'phone.required' => 'Телефон обязателен для заполнения',
+            'phone.regex' => 'Введите корректный номер телефона (11 цифр, начинается с 7)',
+            'company_name.required' => 'Название компании обязательно для заполнения',
+            'password.required' => 'Пароль обязателен для заполнения',
+            'password.min' => 'Пароль должен содержать минимум 6 символов',
+            'password_confirmation.required' => 'Подтверждение пароля обязательно для заполнения',
+            'password_confirmation.same' => 'Пароли не совпадают',
+            'action.required' => 'Действие обязательно для заполнения',
+            'action.in' => 'Недопустимое действие',
         ]);
 
         if ($validator->fails()) {

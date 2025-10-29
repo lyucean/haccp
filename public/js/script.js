@@ -530,53 +530,86 @@ if (registerForm) {
         console.log('Form submit event triggered');
         e.preventDefault();
 
+        const nameInput = document.getElementById('name');
         const emailInput = document.getElementById('email');
         const phoneInput = document.getElementById('phone');
+        const companyNameInput = document.getElementById('company_name');
         const passwordInput = document.getElementById('password');
         const passwordConfirmationInput = document.getElementById('password_confirmation');
+        
+        const nameError = document.getElementById('nameError');
         const emailError = document.getElementById('emailError');
         const phoneError = document.getElementById('phoneError');
+        const companyNameError = document.getElementById('companyNameError');
         const passwordError = document.getElementById('passwordError');
         const passwordConfirmationError = document.getElementById('passwordConfirmationError');
 
         let isValid = true;
 
         // Скрываем ошибки
+        nameError.style.display = 'none';
         emailError.style.display = 'none';
         phoneError.style.display = 'none';
+        companyNameError.style.display = 'none';
         passwordError.style.display = 'none';
         passwordConfirmationError.style.display = 'none';
 
-        // Проверяем, что хотя бы одно из полей email или телефон заполнено
-        if (!emailInput.value && !phoneInput.value) {
-            emailError.textContent = 'Введите email или телефон';
-            emailError.style.display = 'block';
+        // Проверяем имя
+        if (!nameInput.value.trim()) {
+            nameError.textContent = 'Имя обязательно для заполнения';
+            nameError.style.display = 'block';
             isValid = false;
         }
 
-        // Проверяем формат email, если он заполнен
-        if (emailInput.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+        // Проверяем email
+        if (!emailInput.value.trim()) {
+            emailError.textContent = 'Email обязателен для заполнения';
+            emailError.style.display = 'block';
+            isValid = false;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
             emailError.textContent = 'Проверь формат email';
             emailError.style.display = 'block';
             isValid = false;
         }
 
-        // Проверяем формат телефона, если он заполнен
-        if (phoneInput.value && !/^[+]?[0-9]{10,15}$/.test(phoneInput.value.replace(/\D/g, ''))) {
-            phoneError.textContent = 'Проверь формат телефона';
+        // Проверяем телефон
+        if (!phoneInput.value.trim()) {
+            phoneError.textContent = 'Телефон обязателен для заполнения';
             phoneError.style.display = 'block';
+            isValid = false;
+        } else {
+            const phoneDigits = phoneInput.value.replace(/\D/g, '');
+            if (phoneDigits.length !== 11 || !phoneDigits.startsWith('7')) {
+                phoneError.textContent = 'Введите корректный номер телефона (11 цифр, начинается с 7)';
+                phoneError.style.display = 'block';
+                isValid = false;
+            }
+        }
+
+        // Проверяем название компании
+        if (!companyNameInput.value.trim()) {
+            companyNameError.textContent = 'Название компании обязательно для заполнения';
+            companyNameError.style.display = 'block';
             isValid = false;
         }
 
         // Проверяем пароль
-        if (passwordInput.value && passwordInput.value.length < 6) {
+        if (!passwordInput.value.trim()) {
+            passwordError.textContent = 'Пароль обязателен для заполнения';
+            passwordError.style.display = 'block';
+            isValid = false;
+        } else if (passwordInput.value.length < 6) {
             passwordError.textContent = 'Пароль должен содержать минимум 6 символов';
             passwordError.style.display = 'block';
             isValid = false;
         }
 
         // Проверяем подтверждение пароля
-        if (passwordInput.value && passwordConfirmationInput.value && passwordInput.value !== passwordConfirmationInput.value) {
+        if (!passwordConfirmationInput.value.trim()) {
+            passwordConfirmationError.textContent = 'Подтверждение пароля обязательно для заполнения';
+            passwordConfirmationError.style.display = 'block';
+            isValid = false;
+        } else if (passwordInput.value && passwordConfirmationInput.value && passwordInput.value !== passwordConfirmationInput.value) {
             passwordConfirmationError.textContent = 'Пароли не совпадают';
             passwordConfirmationError.style.display = 'block';
             isValid = false;
@@ -857,22 +890,37 @@ document.addEventListener('DOMContentLoaded', function() {
         input.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, ''); // Убираем все не-цифры
             
-            if (value.length > 0) {
-                if (value[0] === '8') {
-                    value = '7' + value.slice(1);
+            // Ограничиваем до 11 цифр максимум
+            if (value.length > 11) {
+                value = value.slice(0, 11);
+            }
+            
+            // Всегда начинаем с 7, если пользователь ввел 8, заменяем на 7
+            if (value.length > 0 && value[0] === '8') {
+                value = '7' + value.slice(1);
+            }
+            
+            // Если пользователь ввел что-то, но не с 7, добавляем 7 в начало
+            if (value.length > 0 && value[0] !== '7') {
+                value = '7' + value;
+                // Снова ограничиваем до 11 цифр
+                if (value.length > 11) {
+                    value = value.slice(0, 11);
                 }
-                if (value[0] === '7' || value[0] === '8') {
-                    if (value.length <= 1) {
-                        value = '+7';
-                    } else if (value.length <= 4) {
-                        value = '+7 (' + value.slice(1);
-                    } else if (value.length <= 7) {
-                        value = '+7 (' + value.slice(1, 4) + ') ' + value.slice(4);
-                    } else if (value.length <= 9) {
-                        value = '+7 (' + value.slice(1, 4) + ') ' + value.slice(4, 7) + '-' + value.slice(7);
-                    } else {
-                        value = '+7 (' + value.slice(1, 4) + ') ' + value.slice(4, 7) + '-' + value.slice(7, 9) + '-' + value.slice(9, 11);
-                    }
+            }
+            
+            // Применяем маску
+            if (value.length > 0) {
+                if (value.length <= 1) {
+                    value = '+7';
+                } else if (value.length <= 4) {
+                    value = '+7 (' + value.slice(1);
+                } else if (value.length <= 7) {
+                    value = '+7 (' + value.slice(1, 4) + ') ' + value.slice(4);
+                } else if (value.length <= 9) {
+                    value = '+7 (' + value.slice(1, 4) + ') ' + value.slice(4, 7) + '-' + value.slice(7);
+                } else {
+                    value = '+7 (' + value.slice(1, 4) + ') ' + value.slice(4, 7) + '-' + value.slice(7, 9) + '-' + value.slice(9, 11);
                 }
             }
             
@@ -881,6 +929,17 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Устанавливаем плейсхолдер
         input.placeholder = '+7 (___) ___-__-__';
+        
+        // Устанавливаем начальное значение
+        if (!input.value) {
+            input.value = '+7';
+        }
+        
+        // Применяем маску к текущему значению
+        if (input.value) {
+            const event = new Event('input', { bubbles: true });
+            input.dispatchEvent(event);
+        }
     });
     
     // Валидация email

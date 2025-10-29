@@ -9,32 +9,34 @@
         <div class="form-success">
             Спасибо! Мы получили твою заявку и скоро свяжемся. Проверь почту - там будет письмо с инструкциями.
         </div>
-        <form id="registerForm" class="modal-form" action="/api/leads" method="POST" onsubmit="return false;">
+        <form id="registerForm" class="modal-form" action="/api/leads" method="POST" onsubmit="return false;" novalidate>
             <div class="form-group">
-                <label for="name">Как тебя зовут?</label>
+                <label for="name">Как тебя зовут? *</label>
                 <input type="text" id="name" name="name" placeholder="Имя" required>
+                <div class="form-error" id="nameError">Имя обязательно для заполнения</div>
             </div>
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="почта@domain.ru">
-                <div class="form-error" id="emailError">Нужен корректный email или телефон</div>
+                <label for="email">Email *</label>
+                <input type="text" id="email" name="email" placeholder="почта@domain.ru" autocomplete="email" required>
+                <div class="form-error" id="emailError">Нужен корректный email</div>
             </div>
             <div class="form-group">
-                <label for="phone">Телефон</label>
-                <input type="tel" id="phone" name="phone" placeholder="+7 (999) 123-45-67">
+                <label for="phone">Телефон *</label>
+                <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" required>
                 <div class="form-error" id="phoneError">Проверь формат телефона</div>
             </div>
             <div class="form-group">
-                <label for="company_name">Название компании</label>
-                <input type="text" id="company_name" name="company_name" placeholder="Кафе 'Вкусно и точка'">
+                <label for="company_name">Название компании *</label>
+                <input type="text" id="company_name" name="company_name" placeholder="Кафе 'Вкусно и точка'" required>
+                <div class="form-error" id="companyNameError">Название компании обязательно для заполнения</div>
             </div>
             <div class="form-group">
-                <label for="password">Пароль</label>
+                <label for="password">Пароль *</label>
                 <input type="password" id="password" name="password" placeholder="Придумай пароль" required>
                 <div class="form-error" id="passwordError">Пароль должен содержать минимум 6 символов</div>
             </div>
             <div class="form-group">
-                <label for="password_confirmation">Подтверждение пароля</label>
+                <label for="password_confirmation">Подтверждение пароля *</label>
                 <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Повтори пароль" required>
                 <div class="form-error" id="passwordConfirmationError">Пароли не совпадают</div>
             </div>
