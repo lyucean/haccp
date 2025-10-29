@@ -458,14 +458,6 @@ function closeModal() {
 
 // Подключаем все кнопки на странице к модальному окну
 document.addEventListener('DOMContentLoaded', () => {
-    // Кнопки в шапке
-    const headerCta = document.querySelector('.header-cta');
-    if (headerCta) {
-        headerCta.addEventListener('click', function(e) {
-            e.preventDefault();
-            openModalWithSource('header_button');
-        });
-    }
 
     // Кнопки в hero секции
     const heroButtons = document.querySelectorAll('.hero-cta .btn-primary');

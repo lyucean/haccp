@@ -16,7 +16,8 @@
                 <li><a href="#how">Как работает</a></li>
                 <li><a href="#pricing">Тарифы</a></li>
                 <li><a href="#services">Услуги</a></li>
-                <li><a href="#" class="header-cta">Начать работу</a></li>
+                <li><a href="/client" class="header-cta">Войти</a></li>
+                <li><a href="/client/register" class="header-cta">Регистрация</a></li>
             </ul>
         </nav>
     </div>
@@ -376,10 +377,9 @@
         <div class="footer-section"> 
             <h4>Продукт</h4>
             <ul>
-                <li><a href="#features">Что умеем</a></li>
-                <li><a href="#pricing">Сколько стоит</a></li>
                 <li><a href="#services">Помощь экспертов</a></li>
                 <li><a href="#" onclick="openDeveloperModal()">Для разработчиков</a></li>
+                <li><a href="/admin">Для партнеров</a></li>
             </ul>
         </div>
 
