@@ -37,7 +37,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/apple-touch-icon.png') }}" />
     <link rel="manifest" href="{{ asset('img/site.webmanifest') }}?v=2" />
 
-    <link type='text/css' rel='stylesheet' href='{{ asset('css/style.css') }}?v=12' />
+    <link type='text/css' rel='stylesheet' href='{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}' />
     <!-- Добавляем Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -49,7 +49,7 @@
     <!-- Input Mask Library - временно отключено для диагностики -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"></script> -->
-    <script type='text/javascript' src='{{ asset('js/script.js') }}' defer='defer'></script>
+    <script type='text/javascript' src='{{ asset('js/script.js') }}?v={{ filemtime(public_path('js/script.js')) }}' defer='defer'></script>
 </head>
 <body>
     @yield('content')

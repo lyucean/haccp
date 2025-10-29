@@ -432,5 +432,5 @@
 <noscript><div><img src="https://mc.yandex.ru/watch/104658034" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 <!-- Подключаем файл с целями Яндекс.Метрики -->
-<script type='text/javascript' src='{{ asset('js/metrika-goals.js') }}' defer='defer'></script>
+<script type='text/javascript' src='{{ asset('js/metrika-goals.js') }}?v={{ filemtime(public_path('js/metrika-goals.js')) }}' defer='defer'></script>
 @endsection
