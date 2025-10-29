@@ -649,7 +649,11 @@ if (registerForm) {
                         formSuccess.style.display = 'block';
 
                         // Если указан редирект, перенаправляем через 2 секунды
-                        if (data.redirect) {
+                        if (data.redirect_url) {
+                            setTimeout(() => {
+                                window.location.href = data.redirect_url;
+                            }, 2000);
+                        } else if (data.redirect) {
                             setTimeout(() => {
                                 window.location.href = data.redirect;
                             }, 2000);

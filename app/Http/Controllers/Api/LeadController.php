@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class LeadController extends Controller
 {
@@ -68,10 +69,8 @@ class LeadController extends Controller
             $data['phone'] = preg_replace('/[^0-9+]/', '', $data['phone']);
         }
 
-        // Хешируем пароль, если он указан
-        if (!empty($data['password'])) {
-            $data['password'] = bcrypt($data['password']);
-        }
+        // Пароль будет автоматически захеширован в модели ClientUser
+        // Не хешируем пароль здесь, так как модель ClientUser автоматически хеширует его
 
         // Удаляем password_confirmation, так как он не нужен в БД
         unset($data['password_confirmation']);
@@ -82,6 +81,35 @@ class LeadController extends Controller
         try {
             // Создаем заявку в базе данных
             $lead = Lead::create($data);
+
+            // Если это регистрация, создаем клиентского пользователя
+            if ($data['action'] === 'register' && !empty($data['email']) && !empty($data['password'])) {
+                $clientUser = \App\Models\ClientUser::create([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'phone' => $data['phone'],
+                    'company_name' => $data['company_name'],
+                    'password' => $data['password'], // Будет автоматически захеширован в модели
+                    'email_verified_at' => now(),
+                ]);
+
+                // Логируем успешное создание
+                Log::info('Lead and ClientUser created successfully', [
+                    'lead_id' => $lead->id,
+                    'client_user_id' => $clientUser->id,
+                    'action' => $data['action'],
+                    'source' => $data['source'] ?? 'unknown',
+                    'ip' => $data['ip_address']
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Регистрация завершена успешно! Теперь вы можете войти в личный кабинет.',
+                    'lead_id' => $lead->id,
+                    'client_user_id' => $clientUser->id,
+                    'redirect_url' => '/client/login'
+                ]);
+            }
 
             // Логируем успешное создание
             Log::info('Lead created successfully', [
