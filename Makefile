@@ -33,12 +33,21 @@ help:
 # Первоначальная настройка
 setup:
 	@echo "🐙 Настройка HACCPro Laravel..."
-	@./docker-setup.sh
+	@echo "Создаем .env файл..."
+	@if [ ! -f .env ]; then cp .env.example .env; fi
+	@echo "Создаем SSL директории..."
+	@mkdir -p docker/nginx/ssl
+	@echo "Создаем SSL сертификат для разработки..."
+	@openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+		-keyout docker/nginx/ssl/key.pem \
+		-out docker/nginx/ssl/cert.pem \
+		-subj "/C=RU/ST=Moscow/L=Moscow/O=HACCPro/CN=localhost" 2>/dev/null || true
+	@make permissions
 	@make build
 	@make up
 	@make install
 	@make migrate
-	@echo "✅ Настройка завершена! Откройте http://localhost"
+	@echo "✅ Настройка завершена! Откройте http://localhost:8080"
 
 # Собрать образы
 build:
@@ -105,6 +114,12 @@ clear:
 	@docker compose exec php-fpm php artisan config:clear
 	@docker compose exec php-fpm php artisan route:clear
 	@docker compose exec php-fpm php artisan view:clear
+
+# Установить права доступа
+permissions:
+	@echo "🔐 Установка прав доступа..."
+	@chmod -R 755 storage bootstrap/cache
+	@echo "✅ Права доступа установлены"
 
 # Создать пользователя админки
 admin:
