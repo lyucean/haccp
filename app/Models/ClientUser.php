@@ -26,6 +26,11 @@ class ClientUser extends Authenticatable implements FilamentUser
         'remember_token',
     ];
 
+    protected $attributes = [
+        'phone' => '',
+        'company_name' => '',
+    ];
+
     protected function casts(): array
     {
         return [
