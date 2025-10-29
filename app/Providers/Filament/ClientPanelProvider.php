@@ -67,7 +67,7 @@ class ClientPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->profile()
-            ->brandName('HACCPro - Клиентская панель')
+            ->brandName('HACCPro | Клиентская панель')
             ->favicon(asset('img/favicon.ico'));
     }
 }
