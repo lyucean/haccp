@@ -1533,6 +1533,14 @@ footer {
     animation: fadeInUp 0.4s forwards 0.4s;
 }
 
+.modal.show .form-group:nth-child(5) {
+    animation: fadeInUp 0.4s forwards 0.5s;
+}
+
+.modal.show .form-group:nth-child(6) {
+    animation: fadeInUp 0.4s forwards 0.6s;
+}
+
 @keyframes fadeInUp {
     to {
         opacity: 1;
