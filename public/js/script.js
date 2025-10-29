@@ -512,6 +512,16 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal();
         }
     });
+
+    // Авто-открытие формы регистрации по параметру URL
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('modal') === 'register') {
+        openModalWithSource('redirect_register');
+        // очищаем параметр из адресной строки (необязательно)
+        const url = new URL(window.location.href);
+        url.searchParams.delete('modal');
+        window.history.replaceState({}, '', url.toString());
+    }
 });
 
 // Обновленная обработка отправки формы
