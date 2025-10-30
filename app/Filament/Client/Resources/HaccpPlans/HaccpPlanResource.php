@@ -20,6 +20,19 @@ class HaccpPlanResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    public static function getNavigationLabel(): string
+    {
+        return 'План ХАССП';
+    }
+    public static function getPluralLabel(): string
+    {
+        return 'Планы';
+    }
+    public static function getLabel(): string
+    {
+        return 'План';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return HaccpPlanForm::configure($schema);

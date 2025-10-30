@@ -45,4 +45,17 @@ class BasicDocumentResource extends Resource
             'edit' => EditBasicDocument::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Базовый пакет документов';
+    }
+    public static function getPluralLabel(): string
+    {
+        return 'Документы';
+    }
+    public static function getLabel(): string
+    {
+        return 'Документ';
+    }
 }
