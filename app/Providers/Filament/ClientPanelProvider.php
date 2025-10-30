@@ -39,6 +39,8 @@ class ClientPanelProvider extends PanelProvider
             )
             ->pages([
                 Pages\Dashboard::class,
+                Pages\BasicDocuments::class,
+                Pages\HaccpPlan::class,
             ])
             ->discoverWidgets(
                 in: app_path('Filament/Client/Widgets'),
