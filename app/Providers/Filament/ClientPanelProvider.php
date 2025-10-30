@@ -45,7 +45,6 @@ class ClientPanelProvider extends PanelProvider
                 for: 'App\\Filament\\Client\\Widgets',
             )
             ->widgets([
-                \App\Filament\Client\Widgets\DocumentSelectionWidget::class,
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
